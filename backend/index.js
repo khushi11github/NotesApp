@@ -30,18 +30,20 @@ io.on("connection", (socket) => {
   console.log("User connected");
 
   socket.on("joinNote", (noteId) => {
-    socket.join(noteId); // join note-specific room
+    socket.join(noteId); // user joins the room for that note
+    console.log(`User joined room for note ${noteId}`);
   });
 
   socket.on("sendNote", ({ noteId, content }) => {
-    socket.to(noteId).emit("receiveNote", content); // broadcast to others in the same note
+    // Broadcast updated content to everyone except sender in the note room
+    socket.to(noteId).emit("receiveNote", content);
+    console.log(`Broadcasting updated content for note ${noteId}`);
   });
 
   socket.on("disconnect", () => {
     console.log("User disconnected");
   });
 });
-
 
 
 
