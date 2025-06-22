@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
+import { TextareaAutosize, Paper } from "@mui/material"; 
 
 const socket = io("http://localhost:8000");
 
@@ -11,6 +12,7 @@ const Notes = () => {
   const [clicked, setClicked] = useState(false);
   const [emailToshare, setEmailToshare] = useState("");
   const textareaRef = useRef(null);
+  const loggedin = localStorage.getItem("loggedin");
 
   // Fetch note content once on mount or when noteId changes
   useEffect(() => {
@@ -44,14 +46,19 @@ const Notes = () => {
 
   const handleSave = () => {
     const id = localStorage.getItem("userId");
+    const token = localStorage.getItem("token");
+  
     const data = {
       content: notes,
       owner: id,
     };
-
+  
     fetch(`http://localhost:8000/api/notes/${noteId}`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`, // ✅ Send token here
+      },
       body: JSON.stringify(data),
     })
       .then((res) => {
@@ -63,6 +70,7 @@ const Notes = () => {
       })
       .catch((error) => console.error("Save error:", error));
   };
+  
 
   const handleShare = () => {
     const data = { noteId, email: emailToshare };
@@ -80,12 +88,13 @@ const Notes = () => {
 
   return (
     <div>
-      <button
+    {loggedin &&  ( <button
         className="bg-blue-500 text-white px-4 py-2 rounded-lg m-4"
         onClick={() => setClicked(true)}
       >
         Collaborate
-      </button>
+      </button> )}
+
       {clicked && (
         <div>
           <input
@@ -100,15 +109,68 @@ const Notes = () => {
 
       <div className="flex justify-center items-center h-screen">
         <div className="w-1/2 h-1/2 border-2 border-gray-300 rounded-lg p-4 shadow-lg">
-          <textarea
+        <div>
+          <div class="notepad"
             ref={textareaRef}
             className="w-full h-full p-2 border border-gray-300 rounded-lg"
-            placeholder="Type your notes here..."
             value={notes}
-            onChange={handleNoteChange}
-          />
+            onChange={handleNoteChange} >
+               <Paper
+                      elevation={3}
+                      sx={{
+                        width: "100%",
+                        maxWidth: 800,
+                        margin: "0 auto",
+                        p: 2,
+                        minHeight: 500,
+                        backgroundImage: `repeating-linear-gradient(
+                          to bottom,
+                          transparent,
+                          transparent 24px,
+                          #ccc 25px
+                        )`,
+                        bgcolor: "#fff9c4",
+                        borderRadius: 2,
+                      }}
+                    >
+               <TextareaAutosize 
+                placeholder="Type your notes here..."
+
+                minRows={20}
+                value={notes}
+                onChange={(e)=>{
+                  handleNoteChange(e)
+                }}
+                    style={{ 
+            width: "100%",
+            border: "none",
+            outline: "none",
+            resize: "none",
+            background: "transparent",
+            lineHeight: "25px",
+            // fontSize: fontSize,
+            // color: fontColor,
+            // fontFamily: fontFamily,
+            padding: "8px"
+                    }}
+
+               />
+
+               </Paper>
+
+          
+         
+
+
+             
+              
+            </div>
+          
         </div>
-      </div>
+          
+        </div>
+    </div>
+      
 
       <button
         className="bg-green-500 text-white px-4 py-2 rounded-lg m-4"

@@ -12,6 +12,14 @@ const NoteSchema = new mongoose.Schema({
         type:String,
         default:''
     },
+    heading:{
+        type: String,
+        default: 'Untitled Note'
+    },
+    color: {
+        type: String,
+        default: '#ffffff' // Default color is white
+    },
     createdAt: {
         type: Date,
         default: Date.now

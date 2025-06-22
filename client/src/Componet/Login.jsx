@@ -22,6 +22,7 @@ function Login() {
       localStorage.setItem("username", data.user.username);
       localStorage.setItem("name", data.user.name);
       localStorage.setItem("email", data.user.email);
+      localStorage.setItem("loggedin",true);
 
       alert("Login successful");
       window.location.href = "/";

@@ -31,6 +31,7 @@ router.post("/create", authenticateToken, async (req, res) => {
     const newNote = new Note({
       NoteId: uuidv4(),  // generate unique ID here
       content: "",
+      heading: req.body.heading || "Untitled Note",
       sharedWith: [],
       owner: req.user.id
     });
@@ -70,23 +71,23 @@ router.put("/:noteId", authenticateToken, async (req, res) => {
   const { noteId } = req.params;
   const { content } = req.body;
   const owner = req.user.id; // Use authenticated user's ID
-  if (!content) {
-    return res.status(400).json({ error: "Content is required" });
-  }
-  if (!noteId) {
-    return res.status(400).json({ error: "NoteId is required" });
-  }
-  if (!owner) {
-    return res.status(400).json({ error: "Owner is required" });
-  }
-  if(owner){
-    console.log("Owner ID:", owner);
-  }
+  // if (!content) {
+  //   return res.status(400).json({ error: "Content is required" });
+  // }
+  // if (!noteId) {
+  //   return res.status(400).json({ error: "NoteId is required" });
+  // }
+  // if (!owner) {
+  //   return res.status(400).json({ error: "Owner is required" });
+  // }
+  // if(owner){
+  //   console.log("Owner ID:", owner);
+  // }
 
   
 
   try {
-    console.log("Finding note with NoteId:", noteId);
+    // console.log("Finding note with NoteId:", noteId);
     const note = await Note.findOne({ NoteId: noteId });
 
     if (!note) {
