@@ -8,6 +8,14 @@ const NoteSchema = new mongoose.Schema({
         index: true
     
     },
+    NoteTitle:{
+        type: String,
+        default: 'Untitled Note'
+    },
+    folder:{
+        type: String,
+        default: null // Default to no folder
+    },
     content:{
         type:String,
         default:''

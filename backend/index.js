@@ -6,6 +6,7 @@ const app = express();
 const mongoose = require("mongoose");
 const userRouter = require('./api/user');
 const notesRouter = require("./api/Notes");
+const folderRouter = require("./api/folder");
 const nodemailer = require("nodemailer");
 
 require('dotenv').config();
@@ -65,7 +66,8 @@ mongoose.connect(process.env.MONGO_URI, {
 
 app.use("/api/auth", require("./api/auth")); // auth routes
 app.use("/api/notes", notesRouter);
-app.use('/api/users', userRouter);  
+app.use('/api/users', userRouter);
+app.use("/api/folders", folderRouter); // folder routes
 
 
     // Handle note updates  

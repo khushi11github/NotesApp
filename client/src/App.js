@@ -5,6 +5,7 @@ import NotesList from './Componet/NotesList';
 import Notes from './Componet/Notes';
 import Login from './Componet/Login';
 import Notepad from './Componet/Notepad';
+import FolderManager from './Componet/FolderManager';
 // import Login from './component/Login';
 // import Register from './component/Register';
 // import Notes from './component/Notes';
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="/notes/:noteId" element={<Notes />} />
 
         <Route path="/notepad" element={<Notepad/>} />
+        <Route path="/folder" element={<FolderManager/>}/>
        
       </Routes>
  
